@@ -1,5 +1,6 @@
-package com.bernardopereira.catanmapgenerator.data
+package com.bernardopereira.catanmapgenerator.data.repository
 
+import com.bernardopereira.catanmapgenerator.data.MapConstants
 import com.bernardopereira.catanmapgenerator.data.MapConstants.NUMBER_OF_TILES
 import com.bernardopereira.catanmapgenerator.data.entity.MapTile
 import com.bernardopereira.catanmapgenerator.data.entity.TileType
@@ -9,14 +10,12 @@ import kotlin.random.Random
 
 class MapGeneratorRepository {
 
-    private val _mapTilesFlow: MutableStateFlow<List<MapTile>> = MutableStateFlow(emptyList())
-    val mapTilesFlow: Flow<List<MapTile>> = _mapTilesFlow
+    private val _mapTilesFlow: MutableStateFlow<List<MapTile>?> = MutableStateFlow(null)
+    val mapTilesFlow: Flow<List<MapTile>?> = _mapTilesFlow
 
     fun generateNewMap() {
-        _mapTilesFlow.value = emptyList()
-
-        val tiles = MapConstants.TILES.toMutableList()
-        val tileNumbers = MapConstants.TILE_NUMBERS.toMutableList()
+        val tiles = MapConstants.tiles.toMutableList()
+        val tileNumbers = MapConstants.tileNumbers.toMutableList()
         val newTileList = mutableListOf<MapTile>()
         (1..NUMBER_OF_TILES).map {
             val randomTileMap = tiles[Random.nextInt(tiles.size)]
@@ -31,7 +30,6 @@ class MapGeneratorRepository {
                 tileNumbers.remove(randomTileNumber)
             }
         }
-
         _mapTilesFlow.value = newTileList
     }
 }

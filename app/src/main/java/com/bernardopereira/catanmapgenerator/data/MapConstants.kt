@@ -3,11 +3,9 @@ package com.bernardopereira.catanmapgenerator.data
 import com.bernardopereira.catanmapgenerator.data.entity.TileType
 
 object MapConstants {
-    val TILE_NUMBERS = listOf(2, 3, 3, 4, 4, 5, 5, 6, 6, 8, 8, 9, 9, 10, 10, 11, 11, 12)
+    val tileNumbers = listOf(2, 3, 3, 4, 4, 5, 5, 6, 6, 8, 8, 9, 9, 10, 10, 11, 11, 12)
     val mostFrequentNumbers = listOf(6, 8)
-    const val NUMBER_OF_TILES = 19
-
-    val TILES = listOf(
+    val tiles = listOf(
         TileType.DESERT,
         TileType.ORE,
         TileType.ORE,
@@ -28,4 +26,6 @@ object MapConstants {
         TileType.WHEAT,
         TileType.WHEAT,
     )
+
+    const val NUMBER_OF_TILES = 19
 }
