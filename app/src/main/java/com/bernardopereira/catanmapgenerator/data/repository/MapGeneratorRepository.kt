@@ -4,14 +4,14 @@ import com.bernardopereira.catanmapgenerator.data.MapConstants
 import com.bernardopereira.catanmapgenerator.data.MapConstants.NUMBER_OF_TILES
 import com.bernardopereira.catanmapgenerator.data.entity.MapTile
 import com.bernardopereira.catanmapgenerator.data.entity.TileType
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlin.random.Random
 
 class MapGeneratorRepository {
 
     private val _mapTilesFlow: MutableStateFlow<List<MapTile>?> = MutableStateFlow(null)
-    val mapTilesFlow: Flow<List<MapTile>?> = _mapTilesFlow
+    val mapTilesFlow: StateFlow<List<MapTile>?> = _mapTilesFlow
 
     fun generateNewMap() {
         val tiles = MapConstants.tiles.toMutableList()

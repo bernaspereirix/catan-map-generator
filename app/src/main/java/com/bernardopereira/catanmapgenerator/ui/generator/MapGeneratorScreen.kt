@@ -61,7 +61,7 @@ import com.bernardopereira.catanmapgenerator.ui.util.ResourceUtils.getTileBackgr
 fun MapGeneratorScreen(
     viewModel: MapGeneratorViewModel = MapGeneratorViewModel(MapGeneratorRepository()),
 ) {
-    val mapGeneratorUiState by viewModel.mapGeneratorUiState.collectAsState(null)
+    val mapTiles by viewModel.mapTiles.collectAsState()
     val context = LocalContext.current
     Scaffold(
         topBar = {
@@ -96,7 +96,7 @@ fun MapGeneratorScreen(
             modifier = Modifier.padding(innerPadding)
         ) {
             Spacer(modifier = Modifier.height(10.dp))
-            GameMap(mapGeneratorUiState?.mapTiles)
+            GameMap(mapTiles)
             Spacer(modifier = Modifier.height(10.dp))
             GenerateMapButton(
                 text = context.getString(R.string.generate_map_bt),
