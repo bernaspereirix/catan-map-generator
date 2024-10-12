@@ -74,7 +74,12 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     testImplementation(libs.mockk)
     testImplementation(libs.kotlintest.runner.junit5)
+    testImplementation(libs.junit.jupiter.params)
 
     // Logging
     implementation(libs.timber)
+}
+
+tasks.withType<Test> {
+    useJUnitPlatform()
 }
