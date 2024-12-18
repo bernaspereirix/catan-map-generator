@@ -14,8 +14,8 @@ class MapGeneratorRepository {
     val mapTilesFlow: StateFlow<List<MapTile>?> = _mapTilesFlow
 
     fun generateNewMap() {
-        val tiles = MapConstants.tiles.toMutableList()
-        val tileNumbers = MapConstants.tileNumbers.toMutableList()
+        val tiles = MapConstants.TILES.toMutableList()
+        val tileNumbers = MapConstants.TILE_NUMBERS.toMutableList()
         val newTileList = mutableListOf<MapTile>()
         (1..NUMBER_OF_TILES).map {
             val randomTileMap = tiles[Random.nextInt(tiles.size)]

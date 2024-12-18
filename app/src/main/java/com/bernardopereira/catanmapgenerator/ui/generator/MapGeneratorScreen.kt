@@ -3,7 +3,6 @@ package com.bernardopereira.catanmapgenerator.ui.generator
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,12 +24,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarColors
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.paint
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeJoin
@@ -41,19 +38,17 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bernardopereira.catanmapgenerator.R
-import com.bernardopereira.catanmapgenerator.data.MapConstants.mostFrequentNumbers
+import com.bernardopereira.catanmapgenerator.data.MapConstants.MOST_FREQUENT_NUMBERS
 import com.bernardopereira.catanmapgenerator.data.entity.MapTile
 import com.bernardopereira.catanmapgenerator.data.entity.TileType
 import com.bernardopereira.catanmapgenerator.data.repository.MapGeneratorRepository
 import com.bernardopereira.catanmapgenerator.ui.theme.CatanRed
 import com.bernardopereira.catanmapgenerator.ui.theme.CatanYellow
 import com.bernardopereira.catanmapgenerator.ui.theme.MateFontFamily
-import com.bernardopereira.catanmapgenerator.ui.theme.Ocean
 import com.bernardopereira.catanmapgenerator.ui.theme.Sand
-import com.bernardopereira.catanmapgenerator.ui.util.HexagonShape
 import com.bernardopereira.catanmapgenerator.ui.util.OutlinedText
-import com.bernardopereira.catanmapgenerator.ui.util.ResourceUtils.getTileBackgroundImage
 
 @RequiresApi(Build.VERSION_CODES.Q)
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
@@ -61,8 +56,9 @@ import com.bernardopereira.catanmapgenerator.ui.util.ResourceUtils.getTileBackgr
 fun MapGeneratorScreen(
     viewModel: MapGeneratorViewModel = MapGeneratorViewModel(MapGeneratorRepository()),
 ) {
-    val mapTiles by viewModel.mapTiles.collectAsState()
+    val mapTiles by viewModel.mapTiles.collectAsStateWithLifecycle()
     val context = LocalContext.current
+
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -95,7 +91,7 @@ fun MapGeneratorScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.padding(innerPadding)
         ) {
-            Spacer(modifier = Modifier.height(10.dp))
+            Spacer(modifier = Modifier.height(60.dp))
             GameMap(mapTiles)
             Spacer(modifier = Modifier.height(10.dp))
             GenerateMapButton(
@@ -110,14 +106,13 @@ fun MapGeneratorScreen(
 private fun GameMap(tileList: List<MapTile>?) {
     Box(
         modifier = Modifier
+            .height(400.dp)
             .fillMaxWidth()
-            .background(Sand, HexagonShape(true))
-            .border(7.dp, Ocean, HexagonShape(true))
     ) {
         Column(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.padding(top = 80.dp, start = 18.dp)
+            modifier = Modifier.padding(start = 6.dp)
         ) {
             var listIndex = 0
             // First row
@@ -125,44 +120,34 @@ private fun GameMap(tileList: List<MapTile>?) {
                 tileList?.slice(IntRange(listIndex, 2))?.forEach {
                     HexTile(it)
                     listIndex++
-                } ?: (0..2).map {
-                    BlankTile()
                 }
             }
             // Second row
-            Row(modifier = Modifier.offset(y = (-19).dp)) {
+            Row(modifier = Modifier.offset(y = (-21).dp)) {
                 tileList?.slice(IntRange(listIndex, 6))?.forEach {
                     HexTile(it)
                     listIndex++
-                } ?: (0..3).map {
-                    BlankTile()
                 }
             }
             // Third row
-            Row(modifier = Modifier.offset(y = (-38).dp)) {
+            Row(modifier = Modifier.offset(y = (-42).dp)) {
                 tileList?.slice(IntRange(listIndex, 11))?.forEach {
                     HexTile(it)
                     listIndex++
-                } ?: (0..4).map {
-                    BlankTile()
                 }
             }
             // Fourth row
-            Row(modifier = Modifier.offset(y = (-57).dp)) {
+            Row(modifier = Modifier.offset(y = (-63).dp)) {
                 tileList?.slice(IntRange(listIndex, 15))?.forEach {
                     HexTile(it)
                     listIndex++
-                } ?: (0..3).map {
-                    BlankTile()
                 }
             }
             // Fifth row
-            Row(modifier = Modifier.offset(y = (-76).dp)) {
+            Row(modifier = Modifier.offset(y = (-84).dp)) {
                 tileList?.slice(IntRange(listIndex, tileList.size - 1))?.forEach {
                     HexTile(it)
                     listIndex++
-                } ?: (0..2).map {
-                    BlankTile()
                 }
             }
         }
@@ -174,8 +159,7 @@ private fun HexTile(tile: MapTile) {
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
-            .size(75.dp)
-            .border(0.5.dp, Color.Black, HexagonShape(false))
+            .size(80.dp)
             .paint(
                 painterResource(getTileBackgroundImage(tile.type)),
                 contentScale = ContentScale.FillBounds
@@ -185,17 +169,6 @@ private fun HexTile(tile: MapTile) {
             TileNumber(tile.number)
         }
     }
-}
-
-@Composable
-private fun BlankTile() {
-    Box(
-        modifier = Modifier
-            .size(75.dp)
-            .clip(HexagonShape(false))
-            .border(0.5.dp, Color.Black, HexagonShape(false))
-            .background(Color.White)
-    )
 }
 
 @Composable
@@ -210,7 +183,7 @@ private fun TileNumber(number: Int) {
     ) {
         Text(
             text = number.toString(),
-            color = if (number in mostFrequentNumbers) {
+            color = if (number in MOST_FREQUENT_NUMBERS) {
                 Color.Red
             } else {
                 Color.Black
@@ -237,5 +210,16 @@ private fun GenerateMapButton(
             fontWeight = FontWeight.Bold,
             fontSize = 22.sp
         )
+    }
+}
+
+private fun getTileBackgroundImage(tileType: TileType): Int {
+    return when (tileType) {
+        TileType.DESERT -> R.drawable.desert_tile
+        TileType.ORE -> R.drawable.ore_tile
+        TileType.BRICK -> R.drawable.brick_tile
+        TileType.WOOD -> R.drawable.wood_tile
+        TileType.SHEEP -> R.drawable.sheep_tile
+        TileType.WHEAT -> R.drawable.wheat_tile
     }
 }
